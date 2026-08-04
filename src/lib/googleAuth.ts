@@ -15,11 +15,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const provider = new GoogleAuthProvider();
-// Request standard profile, email, sheets, and drive scopes
-provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
-provider.addScope('https://www.googleapis.com/auth/userinfo.email');
-provider.addScope('https://www.googleapis.com/auth/spreadsheets');
-provider.addScope('https://www.googleapis.com/auth/drive.readonly');
+// Keep the initial login limited to Firebase's standard profile and email access.
+// Google Sheets and Drive scopes require OAuth verification and should be requested
+// separately only after the app has completed Google's verification process.
 
 // Persist access token in sessionStorage across tab reloads
 let cachedAccessToken: string | null = typeof window !== 'undefined' ? sessionStorage.getItem('google_access_token') : null;
