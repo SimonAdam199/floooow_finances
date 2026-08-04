@@ -1,0 +1,224 @@
+@import "tailwindcss";
+
+@theme {
+  --color-mint: #72C6B5;
+  --color-mint-light: #8FE0D0;
+  --color-mint-hover: #81D2C2;
+  --color-turquoise: #4A9CA0;
+  --color-turquoise-hover: #58ABAD;
+  --color-steel: #47758C;
+  --color-darkblue: #244C75;
+  --color-navy: #193463;
+  --color-navy-dark: #12264A;
+  --color-violetblue: #66698B;
+  --color-lightbg: #F4F8F9;
+  --color-darktext: #183047;
+  --color-cardborder: #D0DCE5;
+
+  /* Harmonized standard colors mapped strictly to the new palette */
+  --color-indigo-50: #F0F8F6;
+  --color-indigo-100: #D8F0EC;
+  --color-indigo-200: #B2E2D8;
+  --color-indigo-300: #88D3C4;
+  --color-indigo-400: #72C6B5;
+  --color-indigo-500: #4A9CA0;
+  --color-indigo-600: #47758C;
+  --color-indigo-700: #244C75;
+  --color-indigo-800: #1D3F65;
+  --color-indigo-900: #193463;
+  --color-indigo-950: #12264A;
+
+  --color-slate-50: #F4F8F9;
+  --color-slate-100: #E7EEF2;
+  --color-slate-200: #D0DCE5;
+  --color-slate-300: #B4C6D4;
+  --color-slate-400: #66698B;
+  --color-slate-500: #47758C;
+  --color-slate-600: #244C75;
+  --color-slate-700: #183047;
+  --color-slate-800: #193463;
+  --color-slate-900: #12264A;
+  --color-slate-950: #0D1A33;
+}
+
+:root {
+  --color-mint: #72C6B5;
+  --color-turquoise: #4A9CA0;
+  --color-steel: #47758C;
+  --color-darkblue: #244C75;
+  --color-navy: #193463;
+  --color-violetblue: #66698B;
+  --color-lightbg: #F4F8F9;
+  --color-darktext: #183047;
+  --color-cardborder: #D0DCE5;
+}
+
+body {
+  background-color: #F4F8F9;
+  color: #183047;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Dominant Surface with Ultra-Smooth Multi-stop Liquid Mesh Gradient */
+.bg-dominant-gradient {
+  position: relative;
+  background: linear-gradient(
+    115deg,
+    #58B3A2 0%,
+    #4BA097 12%,
+    #429091 24%,
+    #3B818C 38%,
+    #327184 52%,
+    #2B617A 66%,
+    #22506F 80%,
+    #1D4165 90%,
+    #193463 100%
+  );
+  overflow: hidden;
+}
+
+.bg-dominant-stripes {
+  background-image: none;
+}
+
+/* Liquid Glass Header Surface Effect */
+.liquid-glass-banner {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.1),
+    0 12px 36px -10px rgba(25, 52, 99, 0.25);
+}
+
+/* Liquid Glass Cards & Badges */
+.liquid-glass-badge {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 100%);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.4), 0 4px 14px rgba(25, 52, 99, 0.12);
+}
+
+.liquid-glass-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.85) 0%, rgba(244, 248, 249, 0.95) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(208, 220, 229, 0.8);
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.9),
+    0 8px 30px -6px rgba(25, 52, 99, 0.08);
+}
+
+.liquid-glass-button {
+  background: linear-gradient(135deg, rgba(114, 198, 181, 0.95) 0%, rgba(74, 156, 160, 0.9) 100%);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  color: #183047;
+  font-weight: 800;
+  border-radius: 0.85rem;
+  padding: 0.55rem 1.25rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.7),
+    0 4px 16px rgba(114, 198, 181, 0.35);
+  cursor: pointer;
+}
+
+.liquid-glass-button:hover {
+  background: linear-gradient(135deg, rgba(129, 210, 194, 1) 0%, rgba(88, 171, 173, 0.98) 100%);
+  transform: translateY(-1px);
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.8),
+    0 8px 22px rgba(114, 198, 181, 0.45);
+}
+
+/* Primary Button: Mentolová or Tyrkysová background with Dark Blue text */
+.btn-primary {
+  background-color: #72C6B5;
+  color: #183047;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  padding: 0.5rem 1.25rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(25, 52, 99, 0.08);
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #81D2C2;
+  color: #12264A;
+  box-shadow: 0 4px 14px rgba(25, 52, 99, 0.14);
+}
+
+/* Secondary Button: Transparent/Light bg, Dark Blue text, Mentolové border */
+.btn-secondary {
+  background-color: #FFFFFF;
+  color: #183047;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  padding: 0.5rem 1.25rem;
+  border: 1.5px solid #72C6B5;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background-color: #F4F8F9;
+  border-color: #4A9CA0;
+  color: #193463;
+}
+
+/* Card styling: White or light gray, subtle blue-gray border, decent shadow */
+.brand-card {
+  background-color: #FFFFFF;
+  border: 1px solid #D0DCE5;
+  border-radius: 1rem;
+  box-shadow: 0 4px 18px rgba(25, 52, 99, 0.05);
+}
+
+/* Liquid Glass updated to match new palette */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid #D0DCE5;
+  box-shadow: 0 8px 32px 0 rgba(25, 52, 99, 0.06);
+}
+
+.dark .liquid-glass {
+  background: rgba(25, 52, 99, 0.85);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Custom smooth scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F4F8F9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #47758C;
+  border-radius: 9999px;
+  border: 2px solid #F4F8F9;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #244C75;
+}

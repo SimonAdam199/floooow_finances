@@ -1,0 +1,8 @@
+{
+  "name": "floooow",
+  "description": "Moderný a prehľadný rodinný rozpočet s inteligentným triedením, správou investícií, majetku a synchronizáciou s Google tabuľkami.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

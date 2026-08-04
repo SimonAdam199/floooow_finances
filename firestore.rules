@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Globálny safety net - predvolené zakázanie prístupu
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Pomocná funkcia na overenie formátu ID dokumentu
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Pravidlá pre zdieľané skupiny Settle Up
+    match /settleup_groups/{groupId} {
+      // Povoliť čítanie a zápis pre kohokoľvek, kto pozná platné ID skupiny (verejné zdieľanie cez odkaz/QR kód)
+      allow get, create, update: if isValidId(groupId);
+      allow delete: if false; // Mazanie nie je povolené z klientskej strany kvôli bezpečnosti
+    }
+  }
+}

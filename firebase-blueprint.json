@@ -1,0 +1,42 @@
+{
+  "entities": {
+    "SettleUpGroup": {
+      "title": "SettleUpGroup",
+      "description": "Zdieľaná skupina pre rozdelenie výdavkov Settle Up",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unikátny identifikátor skupiny"
+        },
+        "name": {
+          "type": "string",
+          "description": "Názov spoločnej akcie alebo výletu"
+        },
+        "members": {
+          "type": "array",
+          "description": "Zoznam mien účastníkov skupiny"
+        },
+        "expenses": {
+          "type": "array",
+          "description": "Zoznam zaevidovaných výdavkov a vyrovnaní"
+        },
+        "createdDate": {
+          "type": "string",
+          "description": "Dátum vytvorenia akcie"
+        },
+        "pinCode": {
+          "type": "string",
+          "description": "Voliteľný 4-miestny bezpečnostný PIN kód pre prístup k akcii"
+        }
+      },
+      "required": ["id", "name", "members", "expenses", "createdDate"]
+    }
+  },
+  "firestore": {
+    "/settleup_groups/{groupId}": {
+      "schema": "SettleUpGroup",
+      "description": "Kolekcia zdieľaných skupín pre Settle Up"
+    }
+  }
+}
