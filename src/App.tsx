@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Transaction, BudgetLimit, Investment, Mortgage, Liability, DEFAULT_CATEGORIES, FamilyAsset, CATEGORY_MAP, FamilyMember, InsuranceContract } from './types';
+import { Transaction, BudgetLimit, Investment, Mortgage, Liability, DEFAULT_CATEGORIES, FamilyAsset, CATEGORY_MAP, FamilyMember, InsuranceContract, SettleUpGroup } from './types';
 import {
   initialTransactions,
   initialBudgets,
@@ -25,7 +25,7 @@ import { LANGUAGES, Language } from './i18n/translations';
 
 import { initAuth, googleSignIn, logout } from './lib/googleAuth';
 import { User } from 'firebase/auth';
-import { checkDbHealth } from './services/apiClient';
+import { getDbUserProfile, saveDbUserProfile } from './services/apiClient';
 
 import {
   TrendingUp,
@@ -82,11 +82,6 @@ export default function App() {
     return initialTransactions;
   });
 
-  // Persist transactions to localStorage
-  useEffect(() => {
-    localStorage.setItem('family_budget_transactions', JSON.stringify(transactions));
-  }, [transactions]);
-
   const [budgets, setBudgets] = useState<BudgetLimit[]>(initialBudgets);
   const [investments, setInvestments] = useState<Investment[]>(() => {
     const saved = localStorage.getItem('family_budget_investments');
@@ -105,6 +100,7 @@ export default function App() {
     }
     return initialInsuranceContracts;
   });
+  const [settleUpGroups, setSettleUpGroups] = useState<SettleUpGroup[]>([]);
 
   // Advanced settings state
   const [categoryMap, setCategoryMap] = useState<Record<string, string[]>>(() => {
@@ -265,6 +261,7 @@ export default function App() {
   const [googleUser, setGoogleUser] = useState<User | null>(null);
   const [googleToken, setGoogleToken] = useState<string | null>(null);
   const [authChecking, setAuthChecking] = useState(true);
+  const [profileLoaded, setProfileLoaded] = useState(false);
   const [authErrorModal, setAuthErrorModal] = useState<{ code: string; message: string } | null>(null);
   const [copiedText, setCopiedText] = useState<string | null>(null);
 
@@ -337,19 +334,44 @@ export default function App() {
   // Sync username with Google profile name if signed in
   useEffect(() => {
     const unsubscribe = initAuth(
-      (currentUser, token) => {
+      async (currentUser, token) => {
         setGoogleUser(currentUser);
         setGoogleToken(token);
-        setAuthChecking(false);
         if (currentUser.displayName) {
           // Get the first name or full name
           const firstWord = currentUser.displayName.split(' ')[0];
           setUserName(firstWord);
         }
+        try {
+          const response = await getDbUserProfile();
+          const profile = response.data.profile || {};
+          const arrayOrEmpty = <T,>(value: unknown): T[] => Array.isArray(value) ? value as T[] : [];
+          setTransactions(arrayOrEmpty<Transaction>(profile.transactions));
+          setBudgets(arrayOrEmpty<BudgetLimit>(profile.budgets));
+          setInvestments(arrayOrEmpty<Investment>(profile.investments));
+          setMortgages(arrayOrEmpty<Mortgage>(profile.mortgages));
+          setLiabilities(arrayOrEmpty<Liability>(profile.liabilities));
+          setAssets(arrayOrEmpty<FamilyAsset>(profile.assets));
+          setInsuranceContracts(arrayOrEmpty<InsuranceContract>(profile.insuranceContracts));
+          setSettleUpGroups(arrayOrEmpty<SettleUpGroup>(profile.settleUpGroups));
+          setCategoryMap((profile.categoryMap as Record<string, string[]>) || CATEGORY_MAP);
+          setFamilyMembers(arrayOrEmpty<FamilyMember>(profile.familyMembers));
+          if (typeof profile.annualSettings === 'object' && profile.annualSettings) {
+            setAnnualSettings(profile.annualSettings);
+          }
+          setProfileLoaded(true);
+        } catch (error) {
+          console.error('Failed to load the authenticated profile:', error);
+          setGoogleUser(null);
+          setProfileLoaded(false);
+        } finally {
+          setAuthChecking(false);
+        }
       },
       () => {
         setGoogleUser(null);
         setGoogleToken(null);
+        setProfileLoaded(false);
         setAuthChecking(false);
         const saved = localStorage.getItem('family_budget_username');
         setUserName(saved || 'Adam');
@@ -357,6 +379,23 @@ export default function App() {
     );
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (!googleUser || !profileLoaded) return;
+    void saveDbUserProfile({
+      transactions,
+      budgets,
+      investments,
+      mortgages,
+      liabilities,
+      assets,
+      insuranceContracts,
+      settleUpGroups,
+      categoryMap,
+      familyMembers,
+      annualSettings,
+    }).catch(error => console.error('Failed to save the authenticated profile:', error));
+  }, [googleUser, profileLoaded, transactions, budgets, investments, mortgages, liabilities, assets, insuranceContracts, settleUpGroups, categoryMap, familyMembers, annualSettings]);
 
   // Theme observer
   useEffect(() => {
@@ -1000,7 +1039,7 @@ export default function App() {
       case 'settleup':
         return (
           <div className="space-y-6 animate-fade-in">
-            <SettleUpTracker activeRole={activeRole} />
+            <SettleUpTracker activeRole={activeRole} initialGroups={settleUpGroups} onGroupsChange={setSettleUpGroups} />
           </div>
         );
 

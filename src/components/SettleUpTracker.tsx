@@ -21,6 +21,8 @@ import {
 
 interface SettleUpTrackerProps {
   activeRole?: UserRole;
+  initialGroups?: SettleUpGroup[];
+  onGroupsChange?: (groups: SettleUpGroup[]) => void;
 }
 
 const DEFAULT_GROUPS: SettleUpGroup[] = [];
@@ -34,29 +36,19 @@ const CATEGORIES = [
   { name: 'Ostatné', icon: Layers, bg: 'bg-slate-50 text-slate-600 dark:bg-slate-900/30 dark:text-slate-400' }
 ];
 
-export default function SettleUpTracker({ activeRole = 'viewer' }: SettleUpTrackerProps) {
+export default function SettleUpTracker({ activeRole = 'viewer', initialGroups = DEFAULT_GROUPS, onGroupsChange }: SettleUpTrackerProps) {
   // State for all Settle Up groups
-  const [groups, setGroups] = useState<SettleUpGroup[]>(() => {
-    const saved = localStorage.getItem('family_budget_settleup');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error('Failed to parse settleup groups', e);
-      }
-    }
-    return DEFAULT_GROUPS;
-  });
+  const [groups, setGroups] = useState<SettleUpGroup[]>(initialGroups);
 
   // Active selected group
   const [activeGroupId, setActiveGroupId] = useState<string>(() => {
     return groups.length > 0 ? groups[0].id : '';
   });
 
-  // Save to localStorage when groups state changes
+  // Persist through the authenticated profile instead of browser storage.
   useEffect(() => {
-    localStorage.setItem('family_budget_settleup', JSON.stringify(groups));
-  }, [groups]);
+    onGroupsChange?.(groups);
+  }, [groups, onGroupsChange]);
 
   const activeGroup = groups.find(g => g.id === activeGroupId) || groups[0];
 

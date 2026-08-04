@@ -3,6 +3,7 @@ import path from "path";
 import dotenv from "dotenv";
 import { aiRouter } from "./src/server/routes/aiRouter";
 import { dbRouter } from "./src/server/routes/dbRouter";
+import { requireFirebaseUser } from "./src/server/middleware/firebaseAuth";
 
 dotenv.config();
 
@@ -10,7 +11,8 @@ const app = express();
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-// Mount Modular API Routers
+// Every API route is protected by Firebase ID-token verification.
+app.use("/api", requireFirebaseUser);
 app.use("/api", aiRouter);
 app.use("/api/db", dbRouter);
 

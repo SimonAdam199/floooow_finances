@@ -5,6 +5,7 @@ export const users = pgTable('users', {
   uid: text('uid').notNull().unique(),
   email: text('email').notNull(),
   name: text('name'),
+  profile: jsonb('profile').$type<Record<string, unknown>>().default({}).notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });
 

@@ -52,7 +52,7 @@ export const initAuth = (
     if (user) {
       const token = cachedAccessToken || sessionStorage.getItem('google_access_token') || '';
       cachedAccessToken = token;
-      if (token && onAuthSuccess) {
+      if (onAuthSuccess) {
         onAuthSuccess(user, token);
       }
     } else {
@@ -115,6 +115,11 @@ export const googleSignIn = async (): Promise<{ user: User; accessToken: string 
 
 export const getAccessToken = (): string | null => {
   return cachedAccessToken || sessionStorage.getItem('google_access_token');
+};
+
+export const getIdToken = async (): Promise<string | null> => {
+  const user = auth.currentUser;
+  return user ? user.getIdToken() : null;
 };
 
 export const logout = async () => {

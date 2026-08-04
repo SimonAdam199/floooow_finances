@@ -144,16 +144,15 @@ export default function SettingsManager({
       return;
     }
 
-    const emailToSave = trimmedEmail || `${trimmedName.toLowerCase().replace(/\s+/g, '')}@floooow.sk`;
-    const token = Math.random().toString(36).substring(2, 10);
-
     const memberObj: FamilyMember = {
       name: trimmedName,
-      email: emailToSave,
+      ...(trimmedEmail ? { email: trimmedEmail } : {}),
       role: newMemberRole,
-      status: 'invited',
-      invitedAt: new Date().toLocaleDateString('sk-SK'),
-      inviteToken: token
+      status: trimmedEmail ? 'invited' : 'active',
+      ...(trimmedEmail ? {
+        invitedAt: new Date().toLocaleDateString('sk-SK'),
+        inviteToken: Math.random().toString(36).substring(2, 10),
+      } : {}),
     };
 
     onSetFamilyMembers([...familyMembers, memberObj]);

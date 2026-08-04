@@ -1,3 +1,5 @@
+import { getIdToken } from '../lib/googleAuth';
+
 export interface DbHealthResponse {
   status: string;
   dbConnected?: boolean;
@@ -145,9 +147,10 @@ export interface DbFamilyMember {
 
 // Internal helper for JSON fetch requests
 async function postJson<T>(url: string, payload: any, defaultErrorMsg: string): Promise<T> {
+  const token = await getIdToken();
   const response = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
     body: JSON.stringify(payload)
   });
 
@@ -171,7 +174,8 @@ async function postJson<T>(url: string, payload: any, defaultErrorMsg: string): 
 }
 
 async function getJson<T>(url: string, defaultErrorMsg: string): Promise<T> {
-  const response = await fetch(url);
+  const token = await getIdToken();
+  const response = await fetch(url, { headers: token ? { Authorization: `Bearer ${token}` } : {} });
   if (!response.ok) {
     const text = await response.text();
     let errorMsg = defaultErrorMsg;
@@ -187,7 +191,8 @@ async function getJson<T>(url: string, defaultErrorMsg: string): Promise<T> {
 }
 
 async function deleteJson<T>(url: string, defaultErrorMsg: string): Promise<T> {
-  const response = await fetch(url, { method: 'DELETE' });
+  const token = await getIdToken();
+  const response = await fetch(url, { method: 'DELETE', headers: token ? { Authorization: `Bearer ${token}` } : {} });
   if (!response.ok) {
     const text = await response.text();
     let errorMsg = defaultErrorMsg;
@@ -205,6 +210,29 @@ async function deleteJson<T>(url: string, defaultErrorMsg: string): Promise<T> {
 // Exported API client functions
 export async function checkDbHealth(): Promise<DbHealthResponse> {
   return getJson<DbHealthResponse>('/api/db/health', 'Chyba pri kontrole stavu databázy');
+}
+
+export interface DbUserProfile {
+  id: number;
+  uid: string;
+  email: string;
+  name?: string | null;
+  profile: Record<string, unknown>;
+}
+
+export async function getDbUserProfile(): Promise<{ success: boolean; data: DbUserProfile }> {
+  return getJson('/api/db/me', 'Chyba pri načítaní profilu.');
+}
+
+export async function saveDbUserProfile(profile: Record<string, unknown>): Promise<{ success: boolean; data: Record<string, unknown> }> {
+  const token = await getIdToken();
+  const response = await fetch('/api/db/me/profile', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+    body: JSON.stringify({ profile }),
+  });
+  if (!response.ok) throw new Error('Chyba pri ukladaní profilu.');
+  return response.json();
 }
 
 export async function parseBankStatement(payload: ParseBankStatementPayload): Promise<ParseBankStatementResponse> {

@@ -73,6 +73,8 @@ Copy [.env.example](.env.example) to `.env` and fill in the values you need. For
 | `SQL_ADMIN_PASSWORD` | PostgreSQL password used by Drizzle Kit |
 | `GEMINI_API_KEY` | Optional Google Gemini API key |
 | `APP_URL` | `http://localhost:3000` locally |
+| `FIREBASE_PROJECT_ID` | Firebase project ID used by the Admin SDK |
+| `FIREBASE_SERVICE_ACCOUNT_KEY` | Complete Firebase service-account JSON, stored only on the server |
 
 Never commit `.env`; it is excluded by [.gitignore](.gitignore).
 
@@ -102,10 +104,10 @@ The development command starts Express and mounts Vite middleware on the same po
 
 The application has two runtime paths:
 
-1. The React interface renders immediately and uses local browser storage for much of the interactive dashboard state.
-2. Express exposes `/api` endpoints for Gemini operations and `/api/db` endpoints for PostgreSQL-backed operations.
+1. The React interface authenticates with Firebase and sends Firebase ID tokens to the API.
+2. Express verifies every API token server-side and stores each account's profile in PostgreSQL.
 
-This means the UI can be previewed without a database, while production use of database-backed features requires PostgreSQL and the environment variables above.
+Sensitive profile data is not trusted from a client-supplied `userId`; the server derives the Firebase UID from the verified token. The profile column currently stores the authenticated dashboard data as JSONB, which keeps accounts isolated while the relational tables are migrated.
 
 ## Deployment direction
 
@@ -121,6 +123,7 @@ The SPA routing configuration is in [public/staticwebapp.config.json](public/sta
 ## Security notes
 
 - Keep Gemini and PostgreSQL credentials on the server.
+- Add `FIREBASE_SERVICE_ACCOUNT_KEY` to Render/Azure server environment variables; do not add it to Vite or Firebase client configuration.
 - Configure Firebase authorized domains before using Google sign-in from a deployed URL.
 - Use a managed secret store or Azure application settings in production.
 - Review API authentication and authorization before exposing the database routes publicly.
