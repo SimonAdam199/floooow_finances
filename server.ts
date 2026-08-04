@@ -25,7 +25,7 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 });
 
 // Start server and mount Vite in dev mode
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 async function start() {
   if (process.env.NODE_ENV !== "production") {

@@ -1,11 +1,10 @@
 {
-  "projectId": "gothic-vector-bttsj",
-  "appId": "1:527751960661:web:349f8934a263b116f29cdc",
-  "apiKey": "AIzaSyD1loFvmKWpCakZenm_kcf1Nh8sIH_R9SM",
-  "authDomain": "gothic-vector-bttsj.firebaseapp.com",
-  "storageBucket": "gothic-vector-bttsj.firebasestorage.app",
-  "messagingSenderId": "527751960661",
-  "measurementId": "",
-  "oAuthClientId": "527751960661-sv8n41ggn3s614v8v7uhk6kgpbna4qp9.apps.googleusercontent.com",
+  "projectId": "gothic-vector-bttsj-e9438",
+  "appId": "1:229349708643:web:0a31ae1d06f50fe16d3956",
+  "apiKey": "AIzaSyAgyBaBoomTd7EoiOvbIaC24iDSKszF468",
+  "authDomain": "gothic-vector-bttsj-e9438.firebaseapp.com",
+  "storageBucket": "gothic-vector-bttsj-e9438.firebasestorage.app",
+  "messagingSenderId": "229349708643",
+  "measurementId": "G-R2FEDC55T9",
   "recaptchaSiteKey": ""
 }

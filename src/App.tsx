@@ -1051,6 +1051,81 @@ export default function App() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      await googleSignIn();
+    } catch (e: any) {
+      console.error('Sign in failed:', e);
+      setAuthErrorModal({
+        code: e.code || 'unknown',
+        message: e.message || String(e)
+      });
+    }
+  };
+
+  if (authChecking) {
+    return (
+      <div className="min-h-screen bg-[#193463] flex items-center justify-center p-6 text-white">
+        <div className="text-center space-y-4">
+          <div className="mx-auto w-14 h-14 rounded-2xl bg-[#72C6B5] text-[#183047] flex items-center justify-center text-2xl font-black shadow-xl">€</div>
+          <div className="w-8 h-8 mx-auto border-4 border-white/20 border-t-[#72C6B5] rounded-full animate-spin" />
+          <p className="text-sm font-semibold text-white/75">Checking your session...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!googleUser) {
+    return (
+      <div className="min-h-screen bg-[#F4F8F9] text-[#183047] flex items-center justify-center p-6 relative overflow-hidden">
+        <div className="absolute inset-0 bg-dominant-gradient opacity-95" />
+        <div className="absolute -top-32 -right-20 w-96 h-96 rounded-full bg-[#72C6B5]/25 blur-3xl" />
+        <div className="absolute -bottom-40 -left-20 w-[28rem] h-[28rem] rounded-full bg-[#4A9CA0]/30 blur-3xl" />
+
+        <main className="relative z-10 w-full max-w-md">
+          <div className="bg-white/95 backdrop-blur-2xl rounded-[2rem] p-8 md:p-10 shadow-2xl border border-white/60 text-center">
+            <div className="mx-auto w-16 h-16 bg-[#72C6B5] text-[#183047] rounded-3xl flex items-center justify-center font-black text-3xl shadow-lg border-4 border-white mb-6">€</div>
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#4A9CA0] mb-3">Family finance workspace</p>
+            <h1 className="text-4xl font-black tracking-tight text-[#193463] lowercase">floooow</h1>
+            <p className="mt-4 text-sm leading-6 text-[#47758C]">
+              Sign in with Google to access your personal financial dashboard, budgets, investments, and reports.
+            </p>
+
+            <button
+              onClick={handleGoogleSignIn}
+              className="mt-8 w-full flex items-center justify-center gap-3 rounded-2xl bg-[#193463] hover:bg-[#244C75] text-white px-5 py-4 font-extrabold shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer"
+            >
+              <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#EA4335" d="M12 5.04c1.7 0 3.2.6 4.4 1.7l3.3-3.3C17.7 1.5 15 1 12 1 7.3 1 3.4 3.7 1.6 7.7l3.9 3C6.4 7.6 8.9 5.04 12 5.04z" />
+                <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.7z" />
+                <path fill="#FBBC05" d="M5.5 14.3c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3l-3.9-3C.8 8 0 10 0 12s.8 3.9 1.6 5.3l3.9-3z" />
+                <path fill="#34A853" d="M12 23c3.2 0 6-1.1 7.9-3l-3.7-2.9c-1.1.7-2.5 1.2-4.2 1.2-3.1 0-5.6-2.6-6.5-5.6l-3.9 3C3.4 20.3 7.3 23 12 23z" />
+              </svg>
+              Continue with Google
+            </button>
+
+            <p className="mt-6 text-[11px] leading-5 text-[#47758C]">
+              Your dashboard will be shown after successful authentication.
+            </p>
+
+            {authErrorModal && (
+              <div className="mt-6 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-left text-rose-800">
+                <p className="font-black text-sm">Sign-in failed</p>
+                <p className="mt-1 text-xs break-words">{authErrorModal.code}: {authErrorModal.message}</p>
+                <button
+                  onClick={() => setAuthErrorModal(null)}
+                  className="mt-3 text-xs font-black underline cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#F4F8F9] text-[#183047] flex flex-col md:flex-row font-sans antialiased relative overflow-hidden" id="fintrack-app-root">
       
@@ -1272,17 +1347,7 @@ export default function App() {
               </div>
             ) : (
               <button
-                onClick={async () => {
-                  try {
-                    await googleSignIn();
-                  } catch (e: any) {
-                    console.error('Sign in failed:', e);
-                    setAuthErrorModal({
-                      code: e.code || 'unknown',
-                      message: e.message || String(e)
-                    });
-                  }
-                }}
+                onClick={handleGoogleSignIn}
                 className="btn-secondary text-xs flex items-center gap-2"
               >
                 <svg className="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24">
