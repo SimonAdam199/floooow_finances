@@ -1387,7 +1387,7 @@ export default function App() {
               </div>
               <h3 className="text-lg font-black text-slate-800 dark:text-white">Problém s prihlásením cez Google</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Pre správne fungovanie prihlásenia v tomto prostredí iFrame / AI Studio je potrebné vykonať nasledujúce kroky.
+                Skontrolujte, či je aktuálna doména aplikácie pridaná vo Firebase Authorized domains.
               </p>
             </div>
 
@@ -1408,7 +1408,7 @@ export default function App() {
                   </h4>
                   <ol className="list-decimal list-inside space-y-2 text-slate-600 dark:text-slate-300 leading-relaxed">
                     <li>Otvorte svoju <a href="https://console.firebase.google.com/" target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 underline font-semibold">Firebase Console</a>.</li>
-                    <li>Vyberte váš projekt s ID <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded font-mono text-[10px] font-bold">gothic-vector-bttsj</code>.</li>
+                    <li>Vyberte váš projekt s ID <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded font-mono text-[10px] font-bold">gothic-vector-bttsj-e9438</code>.</li>
                     <li>Prejdite do sekcie <strong>Build</strong> -&gt; <strong>Authentication</strong> v ľavom menu.</li>
                     <li>Zvoľte záložku <strong>Sign-in method</strong> hore.</li>
                     <li>Kliknite na tlačidlo <strong>Add new provider</strong> (Pridať nového poskytovateľa) a zvoľte <strong>Google</strong>.</li>
@@ -1422,7 +1422,7 @@ export default function App() {
                       💡 Rýchle riešenie: Otvoriť v novej karte
                     </h5>
                     <p className="text-[11px] text-indigo-800 dark:text-indigo-400 leading-relaxed">
-                      Keďže domény sú už vo Firebase pridané, chyba nastáva preto, že aplikácia beží vo vnútri <strong>iFrame náhľadu v Google AI Studio</strong>. Prehliadače z bezpečnostných dôvodov blokujú prihlasovacie vyskakovacie okná (popups) spúšťané z vnútra iFrame rámcov.
+                      Aplikácia musí byť otvorená na samostatnej stránke a jej doména musí byť pridaná vo Firebase. Pre lokálne spustenie použite <strong>localhost</strong>; pre online aplikáciu použite <strong>floooow-finances.onrender.com</strong>.
                     </p>
                     <a
                       href={window.location.href}
@@ -1441,15 +1441,15 @@ export default function App() {
                     <ol className="list-decimal list-inside space-y-2.5 text-slate-600 dark:text-slate-300 leading-relaxed">
                       <li>Otvorte svoju <a href="https://console.firebase.google.com/" target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 underline font-semibold">Firebase Console</a>.</li>
                       <li>
-                        Projekt: <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded font-mono text-[10px] font-bold">gothic-vector-bttsj</code>
+                        Projekt: <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded font-mono text-[10px] font-bold">gothic-vector-bttsj-e9438</code>
                       </li>
                       <li>V menu prejdite na <strong>Build</strong> -&gt; <strong>Authentication</strong> -&gt; záložka <strong>Settings</strong> -&gt; <strong>Authorized domains</strong>.</li>
                       <li>
                         Uistite sa, že sú pridané tieto dve adresy (skopírujte kliknutím):
                         <div className="mt-1.5 pl-4 space-y-1.5">
                           {[
-                            'ais-dev-chd3k3urvvrjxxbk3s5isi-25378556432.europe-west1.run.app',
-                            'ais-pre-chd3k3urvvrjxxbk3s5isi-25378556432.europe-west1.run.app'
+                            'localhost',
+                            'floooow-finances.onrender.com'
                           ].map((domain) => (
                             <div key={domain} className="flex items-center gap-1.5 max-w-full">
                               <code className="flex-1 block bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded font-mono text-[10px] break-all text-slate-700 dark:text-slate-300">
